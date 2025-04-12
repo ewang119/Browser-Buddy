@@ -13,38 +13,65 @@ type Props = {
 
 export default function StartScreen({ setPetData }: Props) {
   const [name, setName] = useState('')
-  const [animalType, setAnimalType] = useState('cat')
+  // const [animalType, setAnimalType] = useState('cat'); 
   const [error, setError] = useState<string | null>(null)
+  const [current, setCurrent] = useState(0)
 
-  const ImageSlider = () => {
+  const animals = [
+    { path: '/animal-gifs/dog.gif', type: 'dog' },
+    { path: '/animal-gifs/cat.gif', type: 'cat' },
+    { path: '/animal-gifs/owl.gif', type: 'owl' },
+    { path: '/animal-gifs/capybara.gif', type: 'capybara' },
+    { path: '/animal-gifs/quokka.gif', type: 'quokka' }
+  ];
 
-    const [current, setCurrent] = useState(0);
-    const animals = ['/animal-gifs/dog.gif', '/animal-gifs/cat.gif', '/animal-gifs/owl.gif', '/animal-gifs/capybara.gif', '/animal-gifs/quokka.gif' ]
-    console.log(animals)
+  type ImageSliderProps = {
+    current: number;
+    setCurrent: React.Dispatch<React.SetStateAction<number>>;
+  };
+
+  const ImageSlider = ({ current, setCurrent }: ImageSliderProps) => {
+
+    const animals = [
+      { path: '/animal-gifs/dog.gif', type: 'dog' },
+      { path: '/animal-gifs/cat.gif', type: 'cat' },
+      { path: '/animal-gifs/owl.gif', type: 'owl' },
+      { path: '/animal-gifs/capybara.gif', type: 'capybara' },
+      { path: '/animal-gifs/quokka.gif', type: 'quokka' }
+    ];
     const length = animals.length;
 
     const nextSlide = () => {
-      setCurrent(current === length - 1 ? 0 : current + 1)
-    }
-
+      setCurrent(prev => (prev === length - 1 ? 0 : prev + 1));
+    };
+    
     const prevSlide = () => {
-      setCurrent(current === 0 ? length - 1 : current - 1);
-    }
+      setCurrent(prev => (prev === 0 ? length - 1 : prev - 1));
+    };    
 
     if (!Array.isArray(animals) || animals.length <= 0) {
         return null;
     }
+
     // {styles.name}
+
     return (
+      <div className={styles.sliderContainer}> {/* Changed to sliderContainer */}
         <div className={styles.container}>
-            <FaArrowLeft className={styles.leftArrow} onClick={prevSlide} />
-            <div className={styles.imageBox}>
-                <img src={animals[current]} alt={animals[current].substring(1, animals[current].lastIndexOf('.'))} className={styles.image} />
-            </div>
-            <FaArrowRight className={styles.rightArrow} onClick={nextSlide} />
+          <FaArrowLeft className={styles.leftArrow} onClick={prevSlide} />
+          <div className={styles.imageBox}>
+            <img 
+              src={animals[current].path} 
+              alt={animals[current].type} 
+              className={styles.image} 
+            />
+          </div>
+          <FaArrowRight className={styles.rightArrow} onClick={nextSlide} />
         </div>
-        );
-    };
+      </div>
+    );
+  };
+
 
   const handleSubmit = async () => {
     if (!name.trim()) {
@@ -55,7 +82,7 @@ export default function StartScreen({ setPetData }: Props) {
     try {
       const now = Date.now()
       const data: PetData = {
-        animalType,
+        animalType: animals[current].type,
         name,
         lastBreak: now,
         nextBreak: now + 3600000,
@@ -97,15 +124,8 @@ export default function StartScreen({ setPetData }: Props) {
         />
       </label>
 
-      <ImageSlider />
+      <ImageSlider current={current} setCurrent={setCurrent} />
 
-      <label>
-        Choose animal:
-        <select value={animalType} onChange={(e) => setAnimalType(e.target.value)}>
-          <option value="cat">Cat</option>
-          <option value="dog">Dog</option>
-        </select>
-      </label>
 
       <button onClick={handleSubmit}>Start!</button>
     </div>
