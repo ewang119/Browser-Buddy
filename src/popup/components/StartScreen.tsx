@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { PetData } from '../types'
-import styles from '../styles/start.module.css'
+import styles from '../../styles/start.module.css'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 
 
@@ -14,8 +14,6 @@ export default function StartScreen({ setPetData }: Props) {
   const [name, setName] = useState('')
   const [animalType, setAnimalType] = useState('cat')
 
-
-  
   const ImageSlider = () => {
 
     const [current, setCurrent] = useState(0);
@@ -24,11 +22,11 @@ export default function StartScreen({ setPetData }: Props) {
     const length = animals.length;
 
     const nextSlide = () => {
-        setCurrent(current === length - 1 ? 0 : current + 1)
+      setCurrent(current === length - 1 ? 0 : current + 1)
     }
 
     const prevSlide = () => {
-        setCurrent(current === 0 ? length - 1 : current - 1);
+      setCurrent(current === 0 ? length - 1 : current - 1);
     }
 
     if (!Array.isArray(animals) || animals.length <= 0) {
@@ -41,7 +39,7 @@ export default function StartScreen({ setPetData }: Props) {
             <div className={styles.imageBox}>
                 <img src={animals[current]} alt={animals[current].substring(1, animals[current].lastIndexOf('.'))} className={styles.image} />
             </div>
-            <FaArrowRight className={styles.rightArrow} onClick={nextSlide} /> 
+            <FaArrowRight className={styles.rightArrow} onClick={nextSlide} />
         </div>
         );
     };
@@ -82,12 +80,14 @@ export default function StartScreen({ setPetData }: Props) {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Mochi"
+          placeholder="e.g. Sonic"
         />
       </label>
 
+      <ImageSlider />
+
       <label>
-        Choose animal:
+        Choose animal: 
         <select value={animalType} onChange={(e) => setAnimalType(e.target.value)}>
           <option value="cat">Cat</option>
           <option value="dog">Dog</option>
