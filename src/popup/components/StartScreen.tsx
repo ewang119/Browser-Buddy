@@ -22,7 +22,10 @@ export default function StartScreen({ setPetData }: Props) {
     { path: '/animal-gifs/cat.gif', type: 'cat' },
     { path: '/animal-gifs/owl.gif', type: 'owl' },
     { path: '/animal-gifs/capybara.gif', type: 'capybara' },
-    { path: '/animal-gifs/quokka.gif', type: 'quokka' }
+    { path: '/animal-gifs/quokka.gif', type: 'quokka' },
+    { path: '/animal-gifs/bears.gif', type: 'bears' },
+    { path: '/animal-gifs/crab.gif', type: 'crab' },
+    { path: '/animal-gifs/lemur.gif', type: 'lemur' },
   ];
 
   type ImageSliderProps = {
@@ -32,13 +35,6 @@ export default function StartScreen({ setPetData }: Props) {
 
   const ImageSlider = ({ current, setCurrent }: ImageSliderProps) => {
 
-    const animals = [
-      { path: '/animal-gifs/dog.gif', type: 'dog' },
-      { path: '/animal-gifs/cat.gif', type: 'cat' },
-      { path: '/animal-gifs/owl.gif', type: 'owl' },
-      { path: '/animal-gifs/capybara.gif', type: 'capybara' },
-      { path: '/animal-gifs/quokka.gif', type: 'quokka' }
-    ];
     const length = animals.length;
 
     const nextSlide = () => {
@@ -115,7 +111,7 @@ export default function StartScreen({ setPetData }: Props) {
       {error && <p className="error-message">{error}</p>}
 
       <label>
-        Name your pet:
+        Name your Pet!
         <input
           type="text"
           value={name}
