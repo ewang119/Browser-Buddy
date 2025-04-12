@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import type { PetData } from '../types'
-import './StartScreen.css'
 
 type Props = {
   setPetData: (data: PetData) => void

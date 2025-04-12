@@ -1,12 +1,15 @@
-import React from 'react';
-
-const MainScreen: React.FC = () => {
+export default function MainScreen({ petData, setPetData }: any) {
+    const gainXP = () => {
+      const updated = { ...petData, XP: petData.XP + 10 }
+      setPetData(updated)
+    }
+  
     return (
-        <div>
-            <h1>Main Screen</h1>
-            <p>Welcome to the Main Screen!</p>
-        </div>
-    );
-};
-
-export default MainScreen;
+      <div>
+        <h2>{petData.name} the {petData.animalType}</h2>
+        <p>XP: {petData.XP}</p>
+        <button onClick={gainXP}>Feed (gain XP)</button>
+      </div>
+    )
+}
+  
