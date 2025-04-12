@@ -4,6 +4,8 @@ import { useState } from 'react'
 import type { PetData } from '../types'
 import { savePetData } from '../storage'
 import '../styles/StartScreen.css'
+import styles from '../styles/start.module.css'
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 
 type Props = {
   setPetData: (data: PetData) => void
@@ -13,6 +15,36 @@ export default function StartScreen({ setPetData }: Props) {
   const [name, setName] = useState('')
   const [animalType, setAnimalType] = useState('cat')
   const [error, setError] = useState<string | null>(null)
+
+  const ImageSlider = () => {
+
+    const [current, setCurrent] = useState(0);
+    const animals = ['/animal-gifs/dog.gif', '/animal-gifs/cat.gif', '/animal-gifs/owl.gif', '/animal-gifs/capybara.gif', '/animal-gifs/quokka.gif' ]
+    console.log(animals)
+    const length = animals.length;
+
+    const nextSlide = () => {
+      setCurrent(current === length - 1 ? 0 : current + 1)
+    }
+
+    const prevSlide = () => {
+      setCurrent(current === 0 ? length - 1 : current - 1);
+    }
+
+    if (!Array.isArray(animals) || animals.length <= 0) {
+        return null;
+    }
+    // {styles.name}
+    return (
+        <div className={styles.container}>
+            <FaArrowLeft className={styles.leftArrow} onClick={prevSlide} />
+            <div className={styles.imageBox}>
+                <img src={animals[current]} alt={animals[current].substring(1, animals[current].lastIndexOf('.'))} className={styles.image} />
+            </div>
+            <FaArrowRight className={styles.rightArrow} onClick={nextSlide} />
+        </div>
+        );
+    };
 
   const handleSubmit = async () => {
     if (!name.trim()) {
@@ -64,6 +96,8 @@ export default function StartScreen({ setPetData }: Props) {
           placeholder="e.g. Mochi"
         />
       </label>
+
+      <ImageSlider />
 
       <label>
         Choose animal:
