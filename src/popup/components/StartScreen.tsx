@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import type { PetData } from '../types'
 import { savePetData } from '../storage'
-import './StartScreen.css'
+import '../styles/StartScreen.css'
 
 type Props = {
   setPetData: (data: PetData) => void
