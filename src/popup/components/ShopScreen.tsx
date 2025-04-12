@@ -9,8 +9,8 @@ export default function ShopScreen() {
     const shopItems = [
         { item: "Medkit1", description: "+10 HP", image: "/medkit.png", price: 100 }, 
         { item: "Medkit2", description: "-10 HP", image: "/medkit.png", price: 200 }, 
-        { item: "Medkit3", description: "-10 XP", image: "/medkit.png", price: 300 }, 
-        { item: "Medkit4", description: "+10 XP", image: "/medkit.png", price: 400 }, 
+        { item: "XP1", description: "-10 XP", image: "/xp.png", price: 300 }, 
+        { item: "XP2", description: "+10 XP", image: "/xp.png", price: 400 }, 
     ];
 
     return (
@@ -26,9 +26,9 @@ export default function ShopScreen() {
             {shopItems.map(item => (
               <div key={item.item} className={styles.gridItem} onClick={() => setSelected(item.item)}>
                 <p className={styles.itemName}>{item.item} <br /> <span className={styles.itemSubheading}>{item.price} Tokens</span></p>
-                <p>{selected}</p>
                 <img src={item.image} alt={`Item ${item.item}`} className={styles.itemImage} />
                 <p className={styles.itemDescription}>{item.description}</p>
+                console.log({selected})
               </div>
             ))}
           </div>

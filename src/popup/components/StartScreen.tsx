@@ -1,7 +1,7 @@
 // src/popup/components/StartScreen.tsx
 
 import { useState } from 'react'
-import type { PetData } from '../types'
+import type { PetData, Goal } from '../types'
 import { savePetData } from '../storage'
 import '../styles/StartScreen.css'
 import styles from '../styles/start.module.css'
@@ -69,11 +69,6 @@ export default function StartScreen({ setPetData }: Props) {
       </div>
     );
   };
-
-  interface Goal {
-    label: string;
-    completed: boolean;
-  }
 
   interface GoalSetterProps {
     setGoals: React.Dispatch<React.SetStateAction<Goal[]>>;
