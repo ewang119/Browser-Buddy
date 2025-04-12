@@ -1,7 +1,19 @@
 // src/popup/components/MainScreen.tsx
+import { useState } from 'react'
+import { PetData } from '../types'
+import TarotDraw from './TarotDraw'
+import WelcomePopup from './WelcomePopup'
 import '../styles/MainScreen.css'
 
-export default function MainScreen({ petData, setPetData }: any) {
+interface MainScreenProps {
+  petData: PetData;
+  setPetData: (data: PetData) => void;
+}
+
+export default function MainScreen({ petData, setPetData }: MainScreenProps) {
+  const [showTarot, setShowTarot] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
+
   const toggleGoal = (index: number) => {
     const newGoals = [...petData.goals]
     newGoals[index].completed = !newGoals[index].completed
@@ -19,6 +31,13 @@ export default function MainScreen({ petData, setPetData }: any) {
 
   return (
     <div className="main-screen">
+      {showWelcome && (
+        <WelcomePopup 
+          petData={petData} 
+          onClose={() => setShowWelcome(false)} 
+        />
+      )}
+
       <h2 className="header">Lv. 1 {petData.name}</h2>
 
       <img
@@ -52,15 +71,29 @@ export default function MainScreen({ petData, setPetData }: any) {
       </div>
 
       <div className="actions">
-        <button>[SHOP]</button>
-        <button>[INVENTORY]</button>
-        <button>[ENTER DOGFIGHT]</button>
+        <button className="action-button" onClick={() => setShowTarot(true)}>
+          ✨ Tarot Draw
+        </button>
+        <button className="action-button">[SHOP]</button>
+        <button className="action-button">[INVENTORY]</button>
+        <button className="action-button">[ENTER DOGFIGHT]</button>
       </div>
 
       <div className="footer">
         <span>Coins: {petData.coins}</span>
         <span>Prestige: {petData.prestige}</span>
       </div>
+
+      {showTarot && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-button" onClick={() => setShowTarot(false)}>
+              ×
+            </button>
+            <TarotDraw petData={petData} setPetData={setPetData} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
