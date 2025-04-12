@@ -54,31 +54,30 @@
     align-items: center;
     width: 100%;
     margin: 20px 0;
-  }
+}
   
-  .animalSelector {
+.animalSelector {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 15px;
-  }
+}
   
-  .animalOption {
+.animalOption {
     padding: 8px 16px;
     background-color: #f0f0f0;
     border-radius: 20px;
     cursor: pointer;
     text-transform: capitalize;
     transition: all 0.2s ease;
-  }
+}
   
-  .animalOption:hover {
+.animalOption:hover {
     background-color: #e0e0e0;
-  }
+}
   
-  .selectedAnimal {
+.selectedAnimal {
     background-color: #4a90e2;
     color: white;
-  }
-  
+} 

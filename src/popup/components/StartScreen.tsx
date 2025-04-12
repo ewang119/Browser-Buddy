@@ -16,6 +16,8 @@ export default function StartScreen({ setPetData }: Props) {
   // const [animalType, setAnimalType] = useState('cat'); 
   const [error, setError] = useState<string | null>(null)
   const [current, setCurrent] = useState(0)
+  const [goals, setGoals] = useState<{ label: string; completed: boolean }[]>([]);
+
 
   const animals = [
     { path: '/animal-gifs/dog.gif', type: 'dog' },
@@ -44,7 +46,7 @@ export default function StartScreen({ setPetData }: Props) {
     const prevSlide = () => {
       setCurrent(prev => (prev === 0 ? length - 1 : prev - 1));
     };    
-
+    
     if (!Array.isArray(animals) || animals.length <= 0) {
         return null;
     }
@@ -68,6 +70,50 @@ export default function StartScreen({ setPetData }: Props) {
     );
   };
 
+  interface Goal {
+    label: string;
+    completed: boolean;
+  }
+
+  interface GoalSetterProps {
+    setGoals: React.Dispatch<React.SetStateAction<Goal[]>>;
+  }
+
+  const GoalSetter: React.FC<GoalSetterProps> = ({ setGoals }) => {
+    const [newGoal, setNewGoal] = useState<string>('');
+  
+    const handleAddGoal = () => {
+      if (!newGoal.trim()) return;
+  
+      setGoals(prev => [...prev, { label: newGoal.trim(), completed: false }]);
+      setNewGoal('');
+    };
+
+    <label>
+    Name your pet!
+    <input
+      type="text"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      placeholder="e.g. Mochi"
+    />
+  </label>
+  
+    return (
+      <div>
+        <label htmlFor="goal-input">Add a goal:</label>
+        <input
+          id="goal-input"
+          type="text"
+          value={newGoal}
+          onChange={(e) => setNewGoal(e.target.value)}
+          placeholder="e.g. Stretch for 5 min"
+        />
+        <button className={styles.goalButton} onClick={handleAddGoal}>Add</button>
+      </div>
+    );
+  };
+
 
   const handleSubmit = async () => {
     if (!name.trim()) {
@@ -84,10 +130,7 @@ export default function StartScreen({ setPetData }: Props) {
         nextBreak: now + 3600000,
         budget: 100,
         coins: 0,
-        goals: [
-          { label: 'Drink water', completed: false },
-          { label: 'Take a walk', completed: false }
-        ],
+        goals: goals, 
         streaks: 0,
         prestige: 0,
         HP: 100,
@@ -111,7 +154,7 @@ export default function StartScreen({ setPetData }: Props) {
       {error && <p className="error-message">{error}</p>}
 
       <label>
-        Name your Pet!
+        Name your pet!
         <input
           type="text"
           value={name}
@@ -121,7 +164,7 @@ export default function StartScreen({ setPetData }: Props) {
       </label>
 
       <ImageSlider current={current} setCurrent={setCurrent} />
-
+      <GoalSetter setGoals={setGoals} />
 
       <button onClick={handleSubmit}>Start!</button>
     </div>
