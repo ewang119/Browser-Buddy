@@ -1,21 +1,42 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { PetData } from './types'
+import { loadPetData, savePetData } from './storage'
+import MainScreen from './components/MainScreen'
+import StartScreen from './components/StartScreen'
+
+const defaultPetData: PetData = {
+  animalType: '',
+  name: '',
+  lastBreak: Date.now(),
+  nextBreak: Date.now() + 3600000,
+  budget: 100,
+  coins: 0,
+  goals: [],
+  streaks: 0,
+  prestige: 0,
+  HP: 100,
+  morale: 100,
+  XP: 0,
+  highScore: 0
+}
 
 export default function App() {
-  const [xp, setXP] = useState(0)
+  const [petData, setPetDataState] = useState<PetData>(defaultPetData)
 
-  const gainXP = () => setXP(x => Math.min(100, x + 10))
+  useEffect(() => {
+    loadPetData().then((data) => {
+      if (data) setPetDataState(data)
+    })
+  }, [])
 
-  return (
-    <div className="container">
-      <img src="/pet.gif" alt="Pet" className="pet" />
-      <img src="/cat.gif" alt="Pet" className="pet" />
-      <img src="/owl.gif" alt="Pet" className="pet" />
-      <img src="/capybara.gif" alt="Pet" className="pet" />
-      <img src="/quokka.gif" alt="Pet" className="pet" />
-      <div className="xp-bar">
-        <div className="xp-fill" style={{ width: `${xp}%` }} />
-      </div>
-      <button onClick={gainXP}>Feed</button>
-    </div>
+  const setPetData = (data: PetData) => {
+    setPetDataState(data)
+    savePetData(data)
+  }
+
+  return petData.name === '' ? (
+    <StartScreen setPetData={setPetData} />
+  ) : (
+    <MainScreen />
   )
 }
