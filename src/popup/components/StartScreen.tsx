@@ -110,7 +110,7 @@ export default function StartScreen({ setPetData }: Props) {
 
   return (
     <div className="start-screen">
-      <h2>Welcome to Browser Pet!</h2>
+      <h2>Welcome to Browser Buddy!</h2>
 
       {error && <p className="error-message">{error}</p>}
 
