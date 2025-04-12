@@ -1,54 +1,70 @@
-# React + TypeScript + Vite
+# Browser Buddy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Chrome extension that helps you stay focused and mindful while browsing the web.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Pet companion that grows and evolves as you maintain good browsing habits
+- Mindfulness Tarot Draw feature powered by Gemini AI
+- Streak tracking and rewards system
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Node.js (v16 or higher)
+- Chrome browser
+- Gemini API key (for Tarot Draw feature)
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file in the root directory and add your Gemini API key:
+   ```
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+4. Build the extension:
+   ```bash
+   npm run build
+   ```
+5. Load the extension in Chrome:
+   - Open Chrome and go to `chrome://extensions/`
+   - Enable "Developer mode"
+   - Click "Load unpacked" and select the `dist` directory
+
+## Features
+
+### Tarot Draw (Mindfulness Magic)
+
+When you're feeling stuck, anxious, or just need a moment, click the ✨ Tarot Draw button. The feature uses Gemini AI to generate gentle metaphors, journal prompts, or grounding phrases based on:
+
+- Your pet's emotional state
+- Your recent habits
+- Time of day
+
+Example readings:
+- "You drew: The Stilled Wind — Sometimes, stillness is the loudest kind of progress."
+- "A reflection: What would rest look like if you treated it like your most sacred task today?"
+
+The readings are designed to be poetic and reflective rather than advice-giving, combining AI with metaphoric language for mental health support.
+
+## Development
+
+```bash
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Lint code
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## License
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+MIT

@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import type { PetData } from '../types'
+import { savePetData } from '../storage'
+import './StartScreen.css'
 
 type Props = {
   setPetData: (data: PetData) => void
@@ -10,36 +12,48 @@ type Props = {
 export default function StartScreen({ setPetData }: Props) {
   const [name, setName] = useState('')
   const [animalType, setAnimalType] = useState('cat')
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = () => {
-    if (!name.trim()) return
-
-    const now = Date.now()
-    const data: PetData = {
-      animalType,
-      name,
-      lastBreak: now,
-      nextBreak: now + 3600000,
-      budget: 100,
-      coins: 0,
-      goals: [
-        { label: 'Drink water', completed: false },
-        { label: 'Take a walk', completed: false }
-      ],
-      streaks: 0,
-      prestige: 0,
-      HP: 100,
-      morale: 100,
-      XP: 0,
-      highScore: 0
+  const handleSubmit = async () => {
+    if (!name.trim()) {
+      setError('Please enter a name for your pet')
+      return
     }
 
-    setPetData(data)
+    try {
+      const now = Date.now()
+      const data: PetData = {
+        animalType,
+        name,
+        lastBreak: now,
+        nextBreak: now + 3600000,
+        budget: 100,
+        coins: 0,
+        goals: [
+          { label: 'Drink water', completed: false },
+          { label: 'Take a walk', completed: false }
+        ],
+        streaks: 0,
+        prestige: 0,
+        HP: 100,
+        morale: 100,
+        XP: 0,
+        highScore: 0
+      }
+
+      await savePetData(data)
+      setPetData(data)
+    } catch (error) {
+      console.error('Error saving pet data:', error)
+      setError('Failed to save pet data. Please try again.')
+    }
   }
 
   return (
     <div className="start-screen">
       <h2>Welcome to Browser Pet!</h2>
+
+      {error && <p className="error-message">{error}</p>}
 
       <label>
         Name your pet:
