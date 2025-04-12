@@ -1,35 +1,88 @@
+/* popup.css or MainScreen.css */
+
 .main-screen {
-  padding: 1rem;
-  text-align: center;
-  min-height: 300px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  height: 100%;
+  box-sizing: border-box;
 }
 
-.loading-screen,
-.error-screen {
-  padding: 2rem;
+.header {
+  font-family: 'Caveat', cursive;
+  font-size: 28px;
   text-align: center;
-  min-height: 300px;
+  margin-bottom: 12px;
+}
+
+.stats {
+  margin-bottom: 16px;
+}
+
+.bar {
+  margin-bottom: 8px;
+}
+
+.bar span {
+  font-size: 14px;
+}
+
+.track {
+  background-color: #eee;
+  border-radius: 10px;
+  height: 12px;
+  margin-top: 2px;
+}
+
+.fill {
+  background-color: #6ac6ff;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.goals h3 {
+  margin: 8px 0 4px;
+  font-size: 16px;
+}
+
+.goals ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.goals li {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.actions {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  margin: 16px 0;
 }
 
-.loading-screen p,
-.error-screen p {
-  font-size: 1.2rem;
-  color: #666;
+.actions button {
+  font-size: 14px;
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: #ffe2b3;
+  cursor: pointer;
+  font-family: 'Fredoka', sans-serif;
+  transition: background 0.2s;
 }
 
-.error-screen p {
-  color: #e74c3c;
+.actions button:hover {
+  background: #ffd491;
 }
 
-h1 {
-  color: #2c3e50;
-  margin-bottom: 2rem;
-  font-size: 1.8rem;
-} 
+.footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #555;
+}

@@ -1,8 +1,9 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+html, body {
+  width: 400px;
+  height: 500px;
+  margin: 0;
+  font-family: 'Fredoka', sans-serif;
+  background-color: #fdf6f0;
 }
 
 .logo {
