@@ -8,6 +8,10 @@ export default function App() {
   return (
     <div className="container">
       <img src="/pet.gif" alt="Pet" className="pet" />
+      <img src="/cat.gif" alt="Pet" className="pet" />
+      <img src="/owl.gif" alt="Pet" className="pet" />
+      <img src="/capybara.gif" alt="Pet" className="pet" />
+      <img src="/quokka.gif" alt="Pet" className="pet" />
       <div className="xp-bar">
         <div className="xp-fill" style={{ width: `${xp}%` }} />
       </div>
