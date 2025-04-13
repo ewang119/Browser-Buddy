@@ -4,8 +4,6 @@ import '../styles/BudgetingPage.css';
 import { PetData, BudgetGoal } from '../types';
 import { generateGeminiImagesWithBase } from '../api/gemini'; // Import the function
 import { extractFrameFromGif } from '../utils/imageUtils'; // Import utility for extracting frames
-import { getImagesFromDirectory } from "../utils/fileUtils";
-import ImageGenerator from "./ImageGenerator";
 
 interface BudgetingPageProps {
   petData: PetData;
@@ -42,7 +40,6 @@ const BudgetingPage: React.FC<BudgetingPageProps> = ({ petData, budgetingGoals, 
   const [showSlideshow, setShowSlideshow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -98,7 +95,6 @@ const BudgetingPage: React.FC<BudgetingPageProps> = ({ petData, budgetingGoals, 
       const baseImagePath = await extractFrameFromGif(`/animal-gifs/${petData.animalType}.gif`);
       
       const { imagePaths } = await generateGeminiImagesWithBase(prompt, baseImagePath);
-      console.log('Generated images:', imagePaths);
       setSlideshowImages(imagePaths);
       setShowSlideshow(true);
     } catch (error) {
@@ -149,13 +145,6 @@ const BudgetingPage: React.FC<BudgetingPageProps> = ({ petData, budgetingGoals, 
 
   const handleAddAmountChange = (label: string, value: number) => {
     setAddAmounts({ ...addAmounts, [label]: value });
-  };
-
-  const handleDirectoryUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const imagePaths = await getImagesFromDirectory(event.target.files);
-      setUploadedImages(imagePaths);
-    }
   };
 
   return (
@@ -290,21 +279,6 @@ const BudgetingPage: React.FC<BudgetingPageProps> = ({ petData, budgetingGoals, 
             <p>Loading...</p>
           </div>
         )}
-
-        <h2>Upload Images for Goals</h2>
-        <input type="file" multiple accept="image/*" onChange={handleDirectoryUpload} />
-        <div style={{ marginTop: "20px" }}>
-          {uploadedImages.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={`Uploaded ${index}`}
-              style={{ width: "100px", height: "100px", margin: "5px" }}
-            />
-          ))}
-        </div>
-        <h2>Generate Images for Goals</h2>
-        <ImageGenerator />
 
         <button
           className="back-button"
