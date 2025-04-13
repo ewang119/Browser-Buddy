@@ -19,7 +19,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
     const timerSetPet = {
       ...petData,
-      nextBreak: Date.now() + 30 * 1000, // Set next break to 30 seconds from now, should be 25 after testing
+      nextBreak: Date.now() + 45 * 60 * 1000, // Set next break to 30 seconds from now, should be 25 after testing
       lastBreak: Date.now(), // Set last break to now
       isOnBreak: false, // Set isOnBreak to false
     };

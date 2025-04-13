@@ -8,8 +8,8 @@ import PetSprite from './PetSprite';
 import { useNavigate } from 'react-router-dom';
 import { MdShoppingCart, MdStars } from 'react-icons/md';
 import DeathScreen from './DeathScreen';
-import '../styles/MainScreen.css';
 
+import '../styles/MainScreen.css';
 interface MainScreenProps {
   petData: PetData;
   setPetData: React.Dispatch<React.SetStateAction<PetData>>;
@@ -29,6 +29,7 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
   const [showTarot, setShowTarot] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
   const [newGoal, setNewGoal] = useState('');
+
   const animationRef = useRef<number | undefined>(undefined);
   const [displayStats, setDisplayStats] = useState({
     HP: petData.HP,
@@ -71,6 +72,7 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
     return current + (target - current) * factor;
   };
 
+
   const updatePetData = async (newData: PetData) => {
     setPetData(newData);
     await savePetData(newData);
@@ -92,6 +94,8 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
     };
 
     await updatePetData(newData);
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 1000);
   };
 
   const addGoal = async () => {
@@ -123,25 +127,28 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
         <span>{label}</span>
         <div className="track">
           <div 
+
             className="fill" 
             style={{ 
               width: `${displayValue}%`,
               backgroundColor,
               transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
             }} 
+
           />
         </div>
       </div>
     );
   };
-
-  return petData.HP <= 0 ? (
-    <DeathScreen petData={petData} setPetData={setPetData} />
-  ) : (
+  return (
     <div className="main-screen">
       {showWelcome && <WelcomePopup petData={petData} onClose={() => setShowWelcome(false)} />}
 
-      <h2 className="header">✨ {petData.name} ✨</h2>
+      <div className="header">
+        <h2 className="title">✨ {petData.name} ✨</h2>
+        <div className="sparkle"></div>
+      </div>
+
 
       <PetSprite petData={petData} setPetData={setPetData} />
 
@@ -151,6 +158,7 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
         <ProgressBar label="HP" value={petData.HP} displayValue={displayStats.HP} />
         <ProgressBar label="Morale" value={petData.morale} displayValue={displayStats.morale} />
         <ProgressBar label="XP" value={petData.XP} displayValue={displayStats.XP} />
+
       </div>
 
       <div className="goals">
@@ -185,6 +193,9 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
         <button onClick={() => navigate('/shop')} className="action-button shop">
           <MdShoppingCart /> Shop
         </button>
+
+        <button className="action-button" onClick={() => navigate("/budgeting")}>[BUDGETING]</button>
+
       </div>
 
       <div className="footer">
