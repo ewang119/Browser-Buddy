@@ -67,7 +67,7 @@ export default function App() {
   return (
     <Router basename="/popup.html">
       <Routes>
-        <Route path="/" element={<MainScreen petData={petData} setPetData={setPetData} />} />
+        <Route path="/" element={<MainScreen petData={petData} setPetData={(data) => setPetData(data as PetData)} />} />
         <Route path="/shop" element={<ShopScreen petData={petData} setPetData={setPetData} />} />
         <Route path="/start" element={<StartScreen setPetData={setPetData} />} />
       </Routes>

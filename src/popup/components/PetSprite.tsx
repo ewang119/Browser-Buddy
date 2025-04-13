@@ -2,156 +2,205 @@ import { useState, useEffect, useRef } from 'react';
 import '../styles/MainScreen.css';
 import { PetData } from '../types';
 
-interface MainScreenProps {
-    petData: PetData;
-    setPetData: React.Dispatch<React.SetStateAction<PetData>>;
+interface PetSpriteProps {
+  petData: PetData;
+  setPetData: React.Dispatch<React.SetStateAction<PetData>>;
 }
 
-const BREAK_DURATION_MS = 60 * 1000;       // 10 seconds (for testing)
-const NEXT_BREAK_DELAY_MS = 30 * 60 * 1000;     // 20 seconds until next break
+// Constants for durations
+const POMODORO_WORK_MS = 10 * 1 * 1000;
+const POMODORO_BREAK_MS = 5 * 1 * 1000;
+const TRADITIONAL_WORK_MS = 10 * 1 * 1000;
+const TRADITIONAL_BREAK_MS = 5 * 1 * 1000;
 const STAT_CHANGE_AMOUNT = 15;
+const BONUS_REWARD = 30;
 
-export default function PetSprite({ petData, setPetData }: MainScreenProps) {
-    const [isHovered, setIsHovered] = useState(false);
-    const petDataRef = useRef(petData);  // ✅ stores always-up-to-date petData
-    const penaltyRef = useRef(false);
+const BREAK_MESSAGES = {
+  DEFAULT: 'Breaks are important!',
+  TRADITIONAL: 'Time to take a break! Park your cursor to care for your pet!',
+  POMODORO: 'You earned a break! Your pet wants to play.',
+  PENALTY: 'Your pet is exhausted! Take a break!'
+};
 
-    // Keep the ref synced with latest state
-    useEffect(() => {
-        petDataRef.current = petData;
-    }, [petData]);
+export default function PetSprite({ petData, setPetData }: PetSpriteProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [mode, setMode] = useState<'pomodoro' | 'traditional'>('traditional');
+  const [pomodoroCount, setPomodoroCount] = useState(0);
+  const [breakMessage, setBreakMessage] = useState(BREAK_MESSAGES.DEFAULT);
+  const petDataRef = useRef(petData);
+  const penaltyRef = useRef(false);
 
-    // Main interval logic
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const now = Date.now();
-            const current = petDataRef.current;
+  // Keep the ref synced with latest state
+  useEffect(() => {
+    petDataRef.current = petData;
+  }, [petData]);
 
+  /* for debugging */
+  useEffect(() => {
+    const now = Date.now();
+    setPetData(prev => ({
+      ...prev,
+      lastBreak: now,
+      nextBreak: now + 10 * 1000, // 10 seconds from now
+    }));
+  }, []);
 
-            // Penalize if they haven't taken a break in over an hour
-            if ( !current.isOnBreak && now - current.lastBreak >= 60 * 60 * 1000 && !penaltyRef.current) {
-                console.log('⚠️ No break in over an hour. Applying penalty.');
-                setPetData(prev => {
-                    const updated = {
-                        ...prev,
-                        HP: Math.max(prev.HP - 25, 0),
-                        morale: Math.max(prev.morale - 25, 0),
-                    };
-                    setTimeout(() => updateIcon(), 0);
-                    return updated;
-                });
-                penaltyRef.current = true;
-            }
+  // Main interval logic
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const current = petDataRef.current;
 
+      const workDuration = mode === 'pomodoro' ? POMODORO_WORK_MS : TRADITIONAL_WORK_MS;
+      const breakDuration = mode === 'pomodoro' ? POMODORO_BREAK_MS : TRADITIONAL_BREAK_MS;
 
-            // Start break when conditions are met
-            if (isHovered && !current.isOnBreak && now >= current.nextBreak) {
-                startBreak();
-            }
+      // Start break when conditions are met
+      if (isHovered && !current.isOnBreak && now >= current.nextBreak && !penaltyRef.current) {
+        startBreak();
+      }
 
-            // Complete break if the duration has passed
-            else if (isHovered && current.isOnBreak && now >= current.lastBreak + BREAK_DURATION_MS) {
-                handleBreakComplete();
-            }
+      // Penalize if they haven't taken a break in time
+      if (!current.isOnBreak && now - current.lastBreak >= 2 * workDuration && !penaltyRef.current) {
+        setPetData(prev => ({
+          ...prev,
+          HP: Math.max(prev.HP - 25, 0),
+          morale: Math.max(prev.morale - 25, 0),
+        }));
+        setBreakMessage(BREAK_MESSAGES.PENALTY);
+        penaltyRef.current = true;
+      } 
+      // Notify when work session expires
+      else if (!isHovered && !current.isOnBreak && now >= current.nextBreak) {
+        setBreakMessage(mode === 'pomodoro' ? BREAK_MESSAGES.POMODORO : BREAK_MESSAGES.TRADITIONAL);
+      } 
+      // Ongoing work session
+      else if (!current.isOnBreak && now < current.nextBreak) {
+        const mins = Math.max(0, Math.ceil((current.nextBreak - now) / 1000));
+        if (mode === 'pomodoro') {
+          setBreakMessage(`You are on Pomodoro Grind #${pomodoroCount + 1}. Next break in: ${mins}s`);
+        } else {
+          setBreakMessage(`Next break in: ${mins}s`);
+        }
+      } 
+      // Break fully completed
+      else if (isHovered && current.isOnBreak && now >= current.lastBreak + breakDuration) {
+        handleBreakComplete();
+      } 
+      // Break aborted
+      else if (!isHovered && current.isOnBreak) {
+        abortBreak();
+      } 
+      // Still on break
+      else if (current.isOnBreak) {
+        const remaining = Math.max(0, Math.ceil((current.lastBreak + breakDuration - now) / 1000));
+        if (mode === 'pomodoro') {
+          setBreakMessage(`You are on Pomodoro Break #${pomodoroCount + 1}. Leave your cursor for: ${remaining}s`);
+        } else {
+          setBreakMessage(`Take a break! Leave your cursor for: ${remaining}s`);
+        }
+      }
+    }, 400);
 
-            // Abort break if user leaves early
-            else if (!isHovered && current.isOnBreak) {
-                abortBreak();
-            }
-        }, 300); // check 3x per second
+    return () => clearInterval(interval);
+  }, [isHovered, mode]);
 
-        return () => clearInterval(interval);
-    }, [isHovered]);
+  // Handle successful break completion
+  const handleBreakComplete = () => {
+    setPetData(prev => {
+      penaltyRef.current = false;
+      const now = Date.now();
+      const newXP = Math.min(prev.XP + STAT_CHANGE_AMOUNT, 100);
+      const shouldPrestige = newXP >= 100;
+      const updated = {
+        ...prev,
+        isOnBreak: false,
+        lastBreak: now,
+        nextBreak: now + (mode === 'pomodoro' ? POMODORO_WORK_MS : TRADITIONAL_WORK_MS),
+        HP: Math.min(prev.HP + STAT_CHANGE_AMOUNT, 100),
+        morale: Math.min(prev.morale + STAT_CHANGE_AMOUNT, 100),
+        XP: shouldPrestige ? newXP - 100 : newXP,
+        prestige: shouldPrestige ? prev.prestige + 1 : prev.prestige,
+        coins: prev.coins + 20,
+      };
 
-    // Handle successful break completion
-    const handleBreakComplete = (): PetData => {
-        let updatedData: PetData;
+      if (mode === 'pomodoro') {
+        const nextPomodoro = pomodoroCount + 1;
+        setPomodoroCount(nextPomodoro);
+        if (nextPomodoro >= 4) {
+          setMode('traditional');
+          setPomodoroCount(0);
+          updated.XP = Math.min(100, updated.XP + BONUS_REWARD);
+          updated.coins += 50;
+        }
+      }
 
-        penaltyRef.current = false;
+      updateIcon();
+      return updated;
+    });
+  };
 
-        setPetData(prev => {
-            const now = Date.now();
-            const newXP = Math.min(prev.XP + STAT_CHANGE_AMOUNT, 100);
-            const shouldPrestige = newXP >= 100;
+  // Handle break cancellation
+  const abortBreak = () => {
+    setPetData(prev => {
+      const now = Date.now();
+      updateIcon();
+      return {
+        ...prev,
+        isOnBreak: false,
+        lastBreak: now,
+        nextBreak: now + (mode === 'pomodoro' ? POMODORO_WORK_MS : TRADITIONAL_WORK_MS),
+        HP: Math.max(prev.HP - STAT_CHANGE_AMOUNT, 0),
+        morale: Math.max(prev.morale - STAT_CHANGE_AMOUNT, 0),
+        XP: Math.max(prev.XP - STAT_CHANGE_AMOUNT, 0),
+      };
+    });
+  };
 
-            updatedData = {
-                ...prev,
-                isOnBreak: false,
-                lastBreak: now,
-                nextBreak: now + NEXT_BREAK_DELAY_MS,
-                HP: Math.min(prev.HP + STAT_CHANGE_AMOUNT, 100),
-                morale: Math.min(prev.morale + STAT_CHANGE_AMOUNT, 100),
-                XP: shouldPrestige ? newXP - 100 : newXP,
-                prestige: shouldPrestige ? prev.prestige + 1 : prev.prestige,
-                coins: prev.coins + 20,
-            };
+  // Begin a new break session
+  const startBreak = () => {
+    setPetData(prev => {
+      const now = Date.now();
+      updateIcon();
+      return {
+        ...prev,
+        isOnBreak: true,
+        lastBreak: now
+      };
+    });
+  };
 
-            setTimeout(() => updateIcon(), 0);
-            return updatedData;
-        });
+  // Toggle timer mode and reset state
+  const toggleMode = () => {
+    setMode(prev => {
+      const newMode = prev === 'pomodoro' ? 'traditional' : 'pomodoro';
+      setPetData(prevData => ({
+        ...prevData,
+        nextBreak: Date.now() + (newMode === 'pomodoro' ? POMODORO_WORK_MS : TRADITIONAL_WORK_MS),
+        lastBreak: Date.now(),
+        isOnBreak: false
+      }));
+      setPomodoroCount(0);
+      return newMode;
+    });
+  };
 
-        return updatedData!;
-    };
+  const updateIcon = () => {
+    chrome.runtime.sendMessage({ type: 'SET_ICON' });
+  };
 
-    // Handle break cancellation
-    const abortBreak = (): PetData => {
-        let updatedData: PetData;
-
-        setPetData(prev => {
-            const now = Date.now();
-            updatedData = {
-                ...prev,
-                isOnBreak: false,
-                lastBreak: now,
-                nextBreak: now + NEXT_BREAK_DELAY_MS,
-                HP: Math.max(prev.HP - STAT_CHANGE_AMOUNT, 0),
-                morale: Math.max(prev.morale - STAT_CHANGE_AMOUNT, 0),
-                XP: Math.max(prev.XP - STAT_CHANGE_AMOUNT, 0),
-                prestige: prev.prestige
-            };
-
-            setTimeout(() => updateIcon(), 0);
-            return updatedData;
-        });
-
-        return updatedData!;
-    };
-
-    // Begin a new break session
-    const startBreak = (): PetData => {
-        let updatedData: PetData;
-
-        setPetData(prev => {
-            const now = Date.now();
-            updatedData = {
-                ...prev,
-                isOnBreak: true,
-                lastBreak: now
-            };
-
-            setTimeout(() => updateIcon(), 0);
-            return updatedData;
-        });
-
-        return updatedData!;
-    };
-
-    // Chrome icon update
-    const updateIcon = () => {
-        chrome.runtime.sendMessage({ type: 'SET_ICON' });
-    };
-
-    // Hover listeners
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
-
-    return (
-        <img
-            src={`/animal-gifs/${petData.animalType}.gif`}
-            alt={`${petData.animalType} pet`}
-            className={`pet-img ${petData.isOnBreak ? 'break-glow' : ''}`}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-        />
-    );
+  return (
+    <div className="pet-sprite-container">
+      <button className="mode-toggle" onClick={toggleMode}>
+        Mode: {mode === 'pomodoro' ? 'Pomodoro' : 'Traditional'} (Click to switch)
+      </button>
+      <img
+        src={`/animal-gifs/${petData.animalType}.gif`}
+        alt={`${petData.animalType} pet`}
+        className={`pet-img ${petData.isOnBreak ? 'break-glow' : ''}`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      />
+      <p className="break-timer">{breakMessage}</p>
+    </div>
+  );
 }

@@ -16,7 +16,7 @@ export default function StartScreen({ setPetData }: Props) {
   // const [animalType, setAnimalType] = useState('cat'); 
   const [error, setError] = useState<string | null>(null)
   const [current, setCurrent] = useState(0)
-  const [goals, setGoals] = useState<{ label: string; completed: boolean }[]>([]);
+  const [_goals, setGoals] = useState<{ label: string; completed: boolean }[]>([]);
 
 
   const animals = [
@@ -122,7 +122,7 @@ export default function StartScreen({ setPetData }: Props) {
         animalType: animals[current].type,
         name,
         lastBreak: now,
-        nextBreak: now + 25 * 60 * 1000,
+        nextBreak: now + 1 * 60 * 1000, // for testing, 1 minute, actual 60
         isOnBreak: false,
         budget: 0,
         coins: 0,
@@ -135,7 +135,7 @@ export default function StartScreen({ setPetData }: Props) {
         highScore: 0,
         lastXPReset: now,
         timerState: {
-          timeLeft: 25 * 60,
+          timeLeft: 1 * 60, // for testing, 1 minute (actual 25)
           isRunning: false,
           isBreak: false,
           sessionCompleted: false,

@@ -321,3 +321,10 @@ html, body {
   size: 2rem;
   transform: translateY(2.5px);
 }
+
+.pet-sprite-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
