@@ -50,6 +50,7 @@ export default function DeathScreen({petData, setPetData}: deathProps) {
         <div className={styles.deathScreen}>         
             <img src="/grave.png" className={styles.graveImage}/>
             <h2>💀 {petData.name} died 💀</h2>
+            <h3>Your high score is: {Math.max(petData.highScore, petData.prestige)}</h3>
             <h3>As punishment, we are randomly choosing the {animals[random].type} as your next pet.</h3>
 
             <label>

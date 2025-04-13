@@ -121,7 +121,7 @@ export default function PetSprite({ petData, setPetData }: PetSpriteProps) {
         penaltyRef.current = false;
         setPetData(prev => {
             const now = Date.now();
-            const newXP = Math.min(prev.XP + Math.round(STAT_CHANGE_AMOUNT * getRandomFactor()), 100);
+            const newXP = Math.min(prev.XP + Math.round(STAT_CHANGE_AMOUNT * getRandomFactor()), 100) * Math.floor(prev.morale / 100);
             const shouldPrestige = newXP >= 100;
             const updated = {
                 ...prev,
@@ -132,7 +132,7 @@ export default function PetSprite({ petData, setPetData }: PetSpriteProps) {
                 morale: Math.min(prev.morale + Math.round(STAT_CHANGE_AMOUNT * getRandomFactor()), 100),
                 XP: shouldPrestige ? newXP - 100 : newXP,
                 prestige: shouldPrestige ? prev.prestige + 1 : prev.prestige,
-                coins: prev.coins + 20,
+                coins: prev.coins + 20 * Math.floor(prev.morale / 100),
             };
 
             if (mode === 'pomodoro') {
@@ -155,7 +155,7 @@ export default function PetSprite({ petData, setPetData }: PetSpriteProps) {
     const abortBreak = () => {
         setPetData(prev => {
             const now = Date.now();
-            let updated = {
+            const updated = {
                 ...prev,
                 isOnBreak: false,
                 lastBreak: now,

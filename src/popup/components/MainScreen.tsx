@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PetData } from '../types';
 import { savePetData } from '../storage';
 import TarotDraw from './TarotDraw';
@@ -7,6 +7,7 @@ import PetMood from './PetMood';
 import PetSprite from './PetSprite';
 import { useNavigate } from 'react-router-dom';
 import { MdShoppingCart, MdStars } from 'react-icons/md';
+import DeathScreen from './DeathScreen';
 import '../styles/MainScreen.css';
 
 interface MainScreenProps {
@@ -28,7 +29,47 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
   const [showTarot, setShowTarot] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
   const [newGoal, setNewGoal] = useState('');
-  const [isAnimating, setIsAnimating] = useState(false);
+  const animationRef = useRef<number | undefined>(undefined);
+  const [displayStats, setDisplayStats] = useState({
+    HP: petData.HP,
+    morale: petData.morale,
+    XP: petData.XP
+  });
+
+  useEffect(() => {
+    const animate = () => {
+      setDisplayStats(prev => {
+        const newStats = {
+          HP: interpolate(prev.HP, petData.HP, 0.1),
+          morale: interpolate(prev.morale, petData.morale, 0.1),
+          XP: interpolate(prev.XP, petData.XP, 0.1)
+        };
+        
+        // Continue animation if we haven't reached the target values
+        if (Math.abs(newStats.HP - petData.HP) > 0.1 ||
+            Math.abs(newStats.morale - petData.morale) > 0.1 ||
+            Math.abs(newStats.XP - petData.XP) > 0.1) {
+          animationRef.current = requestAnimationFrame(animate);
+        }
+        
+        return newStats;
+      });
+    };
+
+    // Start animation when petData changes
+    animationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [petData.HP, petData.morale, petData.XP]);
+
+  // Helper function to interpolate between current and target values
+  const interpolate = (current: number, target: number, factor: number): number => {
+    return current + (target - current) * factor;
+  };
 
   const updatePetData = async (newData: PetData) => {
     setPetData(newData);
@@ -51,8 +92,6 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
     };
 
     await updatePetData(newData);
-    setIsAnimating(true);
-    setTimeout(() => setIsAnimating(false), 1000);
   };
 
   const addGoal = async () => {
@@ -72,7 +111,7 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
     await updatePetData({ ...petData, goals: updatedGoals });
   };
 
-  const ProgressBar = ({ label, value }: { label: string; value: number }) => {
+  const ProgressBar = ({ label, value, displayValue }: { label: string; value: number; displayValue: number }) => {
     let backgroundColor = HP_COLORS.DEFAULT;
     if (label === 'HP' || label === 'Morale') {
       if (value > 70) backgroundColor = HP_COLORS.HIGH;
@@ -84,31 +123,34 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
         <span>{label}</span>
         <div className="track">
           <div 
-            className={`fill ${isAnimating ? 'pulse' : ''}`} 
-            style={{ width: `${value}%`, backgroundColor }} 
+            className="fill" 
+            style={{ 
+              width: `${displayValue}%`,
+              backgroundColor,
+              transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+            }} 
           />
         </div>
       </div>
     );
   };
 
-  return (
+  return petData.HP <= 0 ? (
+    <DeathScreen petData={petData} setPetData={setPetData} />
+  ) : (
     <div className="main-screen">
       {showWelcome && <WelcomePopup petData={petData} onClose={() => setShowWelcome(false)} />}
 
-      <div className="header">
-        <h2 className="title">✨ {petData.name} ✨</h2>
-        <div className="sparkle"></div>
-      </div>
+      <h2 className="header">✨ {petData.name} ✨</h2>
 
       <PetSprite petData={petData} setPetData={setPetData} />
 
       <PetMood petData={petData} />
 
       <div className="stats">
-        <ProgressBar label="HP" value={petData.HP} />
-        <ProgressBar label="Morale" value={petData.morale} />
-        <ProgressBar label="XP" value={petData.XP} />
+        <ProgressBar label="HP" value={petData.HP} displayValue={displayStats.HP} />
+        <ProgressBar label="Morale" value={petData.morale} displayValue={displayStats.morale} />
+        <ProgressBar label="XP" value={petData.XP} displayValue={displayStats.XP} />
       </div>
 
       <div className="goals">
