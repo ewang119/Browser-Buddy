@@ -48,12 +48,15 @@ html, body {
 
 .bar {
   margin-bottom: 0.5rem;
+  width: 100%;
+  max-width: 300px;
 }
 
 .bar span {
   display: block;
   margin-bottom: 0.25rem;
   color: #2c3e50;
+  font-weight: 600;
 }
   
 .track {
@@ -61,12 +64,45 @@ html, body {
   background: #eee;
   border-radius: 4px;
   overflow: hidden;
+  position: relative;
 }
 
 .fill {
   height: 100%;
   background: linear-gradient(90deg, #6e8efb, #a777e3);
-  transition: width 0.3s ease;
+  transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  will-change: width;
+}
+
+.fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.fill.pulse {
+  animation: pulse 1s ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 .goals {
