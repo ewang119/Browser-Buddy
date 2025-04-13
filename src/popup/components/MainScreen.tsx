@@ -7,6 +7,7 @@ import PetMood from './PetMood';
 import PetSprite from './PetSprite';
 import { useNavigate } from 'react-router-dom';
 import { MdShoppingCart } from 'react-icons/md';
+import DeathScreen from './DeathScreen';
 import '../styles/MainScreen.css';
 
 interface MainScreenProps {
@@ -86,71 +87,73 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
     );
   };
 
-  return (
+  return petData.HP <= 0 ? (
+    <DeathScreen petData={petData} setPetData={setPetData} />
+  ) : (
     <div className="main-screen">
-      {showWelcome && <WelcomePopup petData={petData} onClose={() => setShowWelcome(false)} />}
+        {showWelcome && <WelcomePopup petData={petData} onClose={() => setShowWelcome(false)} />}
 
-      <h2 className="header">Lv. 1 {petData.name}</h2>
+        <h2 className="header">Lv. 1 {petData.name}</h2>
 
-      <PetSprite petData={petData} setPetData={setPetData} />
+        <PetSprite petData={petData} setPetData={setPetData} />
 
-      <PetMood petData={petData} />
+        <PetMood petData={petData} />
 
-      <div className="stats">
+        <div className="stats">
         <ProgressBar label="HP" value={petData.HP} />
         <ProgressBar label="Morale" value={petData.morale} />
         <ProgressBar label="XP" value={petData.XP} />
-      </div>
+        </div>
 
-      <div className="goals">
+        <div className="goals">
         <h3>Daily Goals</h3>
         <div className="goal-input">
-          <input
+            <input
             type="text"
             value={newGoal}
             onChange={(e) => setNewGoal(e.target.value)}
             placeholder="Add a new goal..."
             onKeyDown={(e) => e.key === 'Enter' && addGoal()}
-          />
-          <button onClick={addGoal}>Add</button>
+            />
+            <button onClick={addGoal}>Add</button>
         </div>
         <ul>
-          {petData.goals.map((goal, i) => (
+            {petData.goals.map((goal, i) => (
             <li key={i}>
-              <label>
+                <label>
                 <input type="checkbox" checked={goal.completed} onChange={() => toggleGoal(i)} />
                 <span className={goal.completed ? 'completed' : ''}>{goal.label}</span>
                 <button className="remove-goal" onClick={() => removeGoal(i)}>×</button>
-              </label>
+                </label>
             </li>
-          ))}
+            ))}
         </ul>
-      </div>
+        </div>
 
-      <div className="actions">
+        <div className="actions">
         <button onClick={() => setShowTarot(true)}>✨ Tarot Draw</button>
         <button onClick={() => navigate('/shop')}>
-          <MdShoppingCart className="shoppingCart" /> Shop
+            <MdShoppingCart className="shoppingCart" /> Shop
         </button>
         <button>[INVENTORY]</button>
         <button>[ENTER DOGFIGHT]</button>
-      </div>
+        </div>
 
-      <div className="footer">
+        <div className="footer">
         <span>Coins: {petData.coins}</span>
         <span>Prestige: {petData.prestige}</span>
-      </div>
+        </div>
 
-      {showTarot && (
+        {showTarot && (
         <div className="modal-overlay">
-          <div className="modal-content">
+            <div className="modal-content">
             <button className="close-button" onClick={() => setShowTarot(false)}>
-              ×
+                ×
             </button>
             <TarotDraw petData={petData} setPetData={setPetData} />
-          </div>
+            </div>
         </div>
-      )}
+        )}
     </div>
   );
 }

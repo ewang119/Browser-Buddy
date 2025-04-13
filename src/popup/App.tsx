@@ -4,6 +4,7 @@ import { loadPetData, savePetData } from './storage'
 import MainScreen from './components/MainScreen'
 import StartScreen from './components/StartScreen'
 import ShopScreen from './components/ShopScreen'
+import DeathScreen from './components/DeathScreen'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './styles/App.css'
 
@@ -70,6 +71,7 @@ export default function App() {
         <Route path="/" element={<MainScreen petData={petData} setPetData={(data) => setPetData(data as PetData)} />} />
         <Route path="/shop" element={<ShopScreen petData={petData} setPetData={setPetData} />} />
         <Route path="/start" element={<StartScreen setPetData={setPetData} />} />
+        <Route path="/death" element={<DeathScreen petData={petData} setPetData={(data) => setPetData(data as PetData)} />} />
       </Routes>
     </Router>
   )
