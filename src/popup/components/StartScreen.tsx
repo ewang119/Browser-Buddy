@@ -125,7 +125,7 @@ export default function StartScreen({ setPetData }: Props) {
         nextBreak: now + 25 * 60 * 1000,
         budget: 0,
         coins: 0,
-        goals: [],
+        goals: goals,
         streaks: 0,
         prestige: 0,
         HP: 100,

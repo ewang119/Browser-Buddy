@@ -27,6 +27,7 @@ const BREAK_CHECK_INTERVAL = 60 * 1000; // Check for overdue breaks every minute
 const MainScreen: React.FC<MainScreenProps> = ({ petData, setPetData }) => {
   const [showTarot, setShowTarot] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
+  const navigate = useNavigate();
 
   const [newGoal, setNewGoal] = useState('');
   
