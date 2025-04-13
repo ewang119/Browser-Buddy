@@ -52,9 +52,10 @@ export default function ShopScreen({ petData, setPetData }: ShopScreenProps) {
                             const num2 = Math.floor(Math.random() * 10); 
                             const stat = types[num1]
                             const change = scores[num2]
+
                             setPetData({
                                 ...petData, 
-                                [stat]: Math.max(0, Math.min(100, (petData[stat as keyof PetData] as number) + change)),
+                                [stat]: Math.max(stat === 'HP' ? 1 : 0, Math.min(100, (petData[stat as keyof PetData] as number) + change)),
                                 coins: petData.coins - item.price,
                             })
                             setPopupMessage(`Congrats on ` + change +  ` ` + stat + `!!!`);
