@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { PetData } from '../types'
+import { IoArrowBackSharp } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 import styles from '../styles/shop.module.css'
 
 interface ShopScreenProps {
@@ -8,8 +10,8 @@ interface ShopScreenProps {
 }
 
 export default function ShopScreen({ petData, setPetData }: ShopScreenProps) {
-
     const [popupMessage, setPopupMessage] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     const shopItems = [
         { item: "Medkit", description: "+10 HP", image: "/medkit.png", price: 150 }, 
@@ -20,11 +22,12 @@ export default function ShopScreen({ petData, setPetData }: ShopScreenProps) {
 
     return (
         <div className={styles.shopContainer}>
+            <IoArrowBackSharp className={styles.backArrow} onClick={() => navigate('/')}/>
 
             {popupMessage && (
                 <div className={styles.popupOverlay}>
                     <div className={styles.popupBox}>
-                    <p>{popupMessage}</p>
+                    <p className={styles.popupmessage}>{popupMessage}</p>
                     <button onClick={() => setPopupMessage(null)}>Close</button>
                     </div>
                 </div>

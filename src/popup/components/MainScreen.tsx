@@ -4,6 +4,8 @@ import { PetData } from '../types'
 import TarotDraw from './TarotDraw'
 import WelcomePopup from './WelcomePopup'
 import { useNavigate } from 'react-router-dom';
+import { MdShoppingCart } from 'react-icons/md'
+
 import '../styles/MainScreen.css'
 
 interface MainScreenProps {
@@ -76,7 +78,7 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
         <button className="action-button" onClick={() => setShowTarot(true)}>
           ✨ Tarot Draw
         </button>
-        <button className="action-button" onClick={() => navigate('/shop')}>[SHOP]</button>
+        <button className="action-button" onClick={() => navigate('/shop')}> <MdShoppingCart className="shoppingCart"/> Shop </button>
         <button className="action-button">[INVENTORY]</button>
         <button className="action-button">[ENTER DOGFIGHT]</button>
       </div>

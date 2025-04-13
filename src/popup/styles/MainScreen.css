@@ -152,3 +152,8 @@
 .close-button:hover {
   color: #2c3e50;
 }
+
+.shoppingCart {
+  size: 2rem;
+  transform: translateY(2.5px);
+}
