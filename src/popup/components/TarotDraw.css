@@ -1,6 +1,10 @@
 .tarot-draw {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
   padding: 1rem;
-  text-align: center;
 }
 
 .tarot-button {
@@ -67,31 +71,83 @@
 }
 
 .theme-selector {
-  padding: 8px 12px;
-  border-radius: 5px;
-  border: 1px solid #4a5568;
-  background-color: #2d3748;
-  color: #fff;
-  cursor: pointer;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.tarot-card-container {
-  perspective: 1000px;
-  width: 300px;
-  height: 500px;
-  margin: 20px 0;
+.theme-selector label {
+  font-size: 1.1rem;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.theme-selector select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.theme-selector select:focus {
+  outline: none;
+  border-color: #6ac6ff;
+}
+
+.theme-description {
+  font-size: 0.9rem;
+  color: #718096;
+  margin-top: 0.5rem;
+}
+
+.draw-button {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  width: 100%;
+  max-width: 400px;
+}
+
+.draw-button:hover {
+  transform: translateY(-2px);
+}
+
+.draw-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .tarot-card {
-  position: relative;
   width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.6s;
+  max-width: 400px;
+  aspect-ratio: 2/3;
+  perspective: 1000px;
   cursor: pointer;
 }
 
-.tarot-card.flipped {
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.card-inner.flipped {
   transform: rotateY(180deg);
 }
 
@@ -101,59 +157,56 @@
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
 .card-front {
-  background: linear-gradient(135deg, #8e44ad, #9b59b6);
-  transform: rotateY(0deg);
+  background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
+  border: 2px solid #e2e8f0;
 }
 
 .card-back {
-  background: linear-gradient(135deg, #34495e, #2c3e50);
+  background: white;
   transform: rotateY(180deg);
-  padding: 20px;
-  color: #fff;
-  overflow-y: auto;
-}
-
-.card-background {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.card-pattern {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 1px, transparent 1px, transparent 10px);
-  border-radius: 15px;
+  border: 2px solid #e2e8f0;
 }
 
 .card-title {
-  position: relative;
-  color: #fff;
-  font-size: 1.8rem;
-  text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  padding: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.card-content {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #4a5568;
+  white-space: pre-wrap;
 }
 
 .loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
   font-size: 1.2rem;
-  color: #fff;
+  color: #718096;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.error {
+  color: #e53e3e;
+  font-size: 1rem;
+  text-align: center;
+  padding: 1rem;
+  background: #fff5f5;
+  border-radius: 8px;
+  border: 1px solid #fed7d7;
 }
 
 .empty-state {
@@ -163,21 +216,6 @@
   align-items: center;
   height: 100%;
   gap: 20px;
-}
-
-.draw-button {
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #8e44ad, #9b59b6);
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.draw-button:hover {
-  transform: scale(1.05);
 }
 
 .reading-content {
