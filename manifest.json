@@ -11,6 +11,14 @@
     },
     "icons": {
       "128": "icon128.png"
-    }
+    },
+    "background": {
+      "service_worker": "background.js",
+      "type": "module"
+    },
+    "permissions": [
+      "alarms",
+      "storage"
+    ]
   }
   

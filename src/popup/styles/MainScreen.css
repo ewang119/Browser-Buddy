@@ -1,4 +1,11 @@
-/* popup.css or MainScreen.css */
+html, body {
+  width: 400px;
+  height: 500px;
+  margin: 0;
+  padding: 0;
+  font-family: 'Fredoka', sans-serif;
+  background-color: #fdf6f0;
+}
 
 .main-screen {
   padding: 1rem;
@@ -7,6 +14,19 @@
   align-items: center;
   gap: 1.5rem;
   position: relative;
+}
+
+.break-glow {
+  box-shadow: 0 0 12px 4px rgba(255, 0, 0, 0.6);
+}
+
+.break-timer {
+  text-align: center;
+  font-size: 14px;
+  color: #c9302c;
+  font-weight: bold;
+  margin-top: -6px;
+  margin-bottom: 12px;
 }
 
 .header {
@@ -35,7 +55,7 @@
   margin-bottom: 0.25rem;
   color: #2c3e50;
 }
-
+  
 .track {
   height: 8px;
   background: #eee;
@@ -300,4 +320,11 @@
 .shoppingCart {
   size: 2rem;
   transform: translateY(2.5px);
+}
+
+.pet-sprite-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }

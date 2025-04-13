@@ -1,13 +1,14 @@
 export interface Goal {
     label: string
     completed: boolean
-  }
+}
   
-  export interface PetData {
+export interface PetData {
     animalType: string
     name: string
     lastBreak: number
     nextBreak: number
+    isOnBreak: boolean
     budget: number
     coins: number
     goals: Goal[]
@@ -26,5 +27,5 @@ export interface Goal {
       lastBreakTime: number
       lastUpdate: number
     }
-  }
+}
   
