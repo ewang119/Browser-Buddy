@@ -8,9 +8,13 @@ interface GeminiResponse {
         text: string;
       }>;
     };
+    finishReason: string;
   }>;
-  error?: {
-    message: string;
+  promptFeedback?: {
+    safetyRatings: Array<{
+      category: string;
+      probability: string;
+    }>;
   };
 }
 
@@ -35,7 +39,7 @@ export async function generateTarotReading(prompt: string): Promise<string> {
           temperature: 0.7,
           topK: 40,
           topP: 0.95,
-          maxOutputTokens: 1024,
+          maxOutputTokens: 2048,
         },
         safetySettings: [
           {
@@ -60,16 +64,24 @@ export async function generateTarotReading(prompt: string): Promise<string> {
 
     if (!response.ok) {
       const errorData = await response.json();
+      console.error('API Error Response:', errorData);
       throw new Error(errorData.error?.message || 'Failed to generate tarot reading');
     }
 
     const data: GeminiResponse = await response.json();
+    console.log('API Response:', data);
     
     if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+      console.error('Invalid response format:', data);
       throw new Error('Invalid response format from Gemini API');
     }
 
-    return data.candidates[0].content.parts[0].text;
+    const text = data.candidates[0].content.parts[0].text;
+    if (!text.trim()) {
+      throw new Error('Empty response from Gemini API');
+    }
+
+    return text;
   } catch (error) {
     console.error('Error calling Gemini API:', error);
     if (error instanceof Error) {

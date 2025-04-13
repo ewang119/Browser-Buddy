@@ -1,0 +1,17 @@
+Placement of the budgeting aspect:
+- On the mainpage, but scrolled down?
+- On the a separate page, accessed through a button on the mainpage?
+
+Core Data Fields: 
+- ID (Int), 
+- Name, 
+- Description, 
+- Tags (i.e. "Rent", "Low Priority", "High Priority", "Vacation", "Miscellaneous", etc.)
+- Amount allocated/Goal Amount
+
+Functionale:
+- Idea 1: regular progress bars + click for more descriptive info
+    - Kind of boring tbh
+    - Making it more fun: use Gemini to create image if goal is not met versus when goal is met
+        - ex. homeless sad cat vs cat living in a house 
+- Bonus: the pet "drags" the highest priority financial Goal

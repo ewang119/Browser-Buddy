@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap');
+
+:root {
+  --primary-color: #8a2be2;
+  --secondary-color: #ff6b6b;
+  --accent-color: #4ecdc4;
+  --background-color: #fdf6f0;
+  --text-color: #2c3e50;
+  --mystical-purple: #9b59b6;
+  --mystical-blue: #3498db;
+  --mystical-pink: #e84393;
+  --mystical-teal: #00cec9;
+}
+
 html, body {
   width: 400px;
   height: 500px;
@@ -40,4 +54,138 @@ html, body {
 
 .read-the-docs {
   color: #888;
+}
+
+/* Mystical Background Effects */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(154, 89, 182, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(52, 152, 219, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Floating Animation */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Sparkle Animation */
+@keyframes sparkle {
+  0% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.5); }
+}
+
+/* Mystical Button Styles */
+button {
+  background: linear-gradient(135deg, var(--mystical-purple), var(--mystical-blue));
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  color: white;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(154, 89, 182, 0.3);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(154, 89, 182, 0.4);
+  background: linear-gradient(135deg, var(--mystical-blue), var(--mystical-purple));
+}
+
+/* Card Styles */
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 20px;
+  margin: 15px;
+  box-shadow: 0 8px 32px rgba(154, 89, 182, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(154, 89, 182, 0.15);
+}
+
+/* Progress Bar Styles */
+.progress-bar {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  height: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.3) 50%, 
+    transparent 100%);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Mystical Text Styles */
+h1, h2, h3 {
+  font-family: 'Fredoka', sans-serif;
+  color: var(--mystical-purple);
+  text-shadow: 2px 2px 4px rgba(154, 89, 182, 0.2);
+}
+
+/* Mystical Input Styles */
+input, select, textarea {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(154, 89, 182, 0.2);
+  border-radius: 15px;
+  padding: 8px 15px;
+  font-family: 'Quicksand', sans-serif;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--mystical-purple);
+  box-shadow: 0 0 10px rgba(154, 89, 182, 0.2);
+}
+
+/* Mystical Animation Classes */
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.sparkle {
+  position: relative;
+}
+
+.sparkle::after {
+  content: '✨';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  animation: sparkle 2s infinite;
 }

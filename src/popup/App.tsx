@@ -3,6 +3,8 @@ import { PetData } from './types'
 import { loadPetData, savePetData } from './storage'
 import MainScreen from './components/MainScreen'
 import StartScreen from './components/StartScreen'
+import ShopScreen from './components/ShopScreen'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './styles/App.css'
 
 /* const defaultPetData: PetData = {
@@ -62,5 +64,13 @@ export default function App() {
     return <StartScreen setPetData={setPetData} />
   }
 
-  return <MainScreen petData={petData} setPetData={setPetData as React.Dispatch<React.SetStateAction<PetData>>} />
+  return (
+    <Router basename="/popup.html">
+      <Routes>
+        <Route path="/" element={<MainScreen petData={petData} setPetData={setPetData} />} />
+        <Route path="/shop" element={<ShopScreen petData={petData} setPetData={setPetData} />} />
+        <Route path="/start" element={<StartScreen setPetData={setPetData} />} />
+      </Routes>
+    </Router>
+  )
 }
