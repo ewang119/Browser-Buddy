@@ -141,7 +141,7 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
     <div className="main-screen">
       {showWelcome && <WelcomePopup petData={petData} onClose={() => setShowWelcome(false)} />}
 
-      <h2 className="header">✨ {petData.name} ✨</h2>
+      <h2 className="mainscreenheader">✨ {petData.name} ✨</h2>
 
       <PetSprite petData={petData} setPetData={setPetData} />
 
