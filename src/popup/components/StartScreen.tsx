@@ -58,19 +58,25 @@ export default function StartScreen({ setPetData }: Props) {
         animalType,
         name,
         lastBreak: now,
-        nextBreak: now + 3600000,
-        budget: 100,
+        nextBreak: now + 25 * 60 * 1000,
+        budget: 0,
         coins: 0,
-        goals: [
-          { label: 'Drink water', completed: false },
-          { label: 'Take a walk', completed: false }
-        ],
+        goals: [],
         streaks: 0,
         prestige: 0,
         HP: 100,
         morale: 100,
         XP: 0,
-        highScore: 0
+        highScore: 0,
+        lastXPReset: now,
+        timerState: {
+          timeLeft: 25 * 60,
+          isRunning: false,
+          isBreak: false,
+          sessionCompleted: false,
+          lastBreakTime: now,
+          lastUpdate: now
+        }
       }
 
       await savePetData(data)
