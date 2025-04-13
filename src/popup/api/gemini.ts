@@ -1,4 +1,4 @@
-const GEMINI_API_KEY = "AIzaSyAdoRJpM0dbN9lJ15M0FaF5HR-HoMksFeQ";
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;;
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-thinking-exp-01-21:generateContent';
 
 interface GeminiResponse {
