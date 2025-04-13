@@ -4,7 +4,7 @@ import { PetData } from '../types'
 import TarotDraw from './TarotDraw'
 import WelcomePopup from './WelcomePopup'
 import '../styles/MainScreen.css'
-
+import { useNavigate } from 'react-router-dom'
 interface MainScreenProps {
   petData: PetData;
   setPetData: (data: PetData) => void;
@@ -28,9 +28,10 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
       </div>
     </div>
   )
-
+  const navigate = useNavigate()
   return (
     <div className="main-screen">
+      
       {showWelcome && (
         <WelcomePopup 
           petData={petData} 
@@ -77,6 +78,7 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
         <button className="action-button">[SHOP]</button>
         <button className="action-button">[INVENTORY]</button>
         <button className="action-button">[ENTER DOGFIGHT]</button>
+        <button className="action-button" onClick={() => navigate("/budgeting")}>[BUDGETING]</button>
       </div>
 
       <div className="footer">

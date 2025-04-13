@@ -5,6 +5,11 @@ import MainScreen from './components/MainScreen'
 import StartScreen from './components/StartScreen'
 import './styles/App.css'
 
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import BudgetingPage from './components/Budgeting';
+
+
 // const defaultPetData: PetData = {
 //   animalType: '',
 //   name: '',
@@ -54,5 +59,14 @@ export default function App() {
     return <StartScreen setPetData={setPetData} />
   }
 
-  return <MainScreen petData={petData} setPetData={setPetData} />
+  // return <MainScreen petData={petData} setPetData={setPetData} />
+  return (
+    <Router basename="/popup.html">
+      <Routes>
+        <Route path="/" element={<MainScreen petData={petData} setPetData={setPetData} />} />
+        <Route path="/budgeting" element={<BudgetingPage petData={petData!} />} />
+        <Route path="/start" element={<StartScreen setPetData={setPetData} />} />
+      </Routes>
+    </Router>
+  )
 }
