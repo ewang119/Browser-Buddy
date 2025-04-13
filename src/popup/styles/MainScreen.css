@@ -78,9 +78,12 @@ html, body {
 }
 
 .pet-img {
-  width: 150px;
-  height: 150px;
+  width: 120px;               /* try 120–160px */
+  height: auto;
   object-fit: contain;
+  image-rendering: pixelated; /* keeps pixel art sharp */
+  transform: scale(1.1);      /* scale up the image */
+  /* margin-top: -20px;          optional: pull it up to avoid pushing page down */
 }
 
 .stats {
