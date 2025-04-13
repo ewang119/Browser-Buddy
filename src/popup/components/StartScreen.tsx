@@ -122,7 +122,7 @@ export default function StartScreen({ setPetData }: Props) {
         animalType: animals[current].type,
         name,
         lastBreak: now,
-        nextBreak: now + 1 * 60 * 1000, // for testing, 1 minute, actual 60
+        nextBreak: now + 1 * 45 * 1000, // for testing, 1 minute, actual 60
         isOnBreak: false,
         budget: 0,
         coins: 0,
@@ -135,7 +135,7 @@ export default function StartScreen({ setPetData }: Props) {
         highScore: 0,
         lastXPReset: now,
         timerState: {
-          timeLeft: 1 * 60, // for testing, 1 minute (actual 25)
+          timeLeft: 1 * 45, // for testing, 1 minute (actual 25)
           isRunning: false,
           isBreak: false,
           sessionCompleted: false,
