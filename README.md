@@ -8,7 +8,23 @@ The FIRST (probably) Chrome extension that actually holds you accountable for we
 - Mindfulness Tarot Draw feature powered by Gemini AI
 - Take web surfing breaks to keep your pet well and gain prestige, but your pet may suffer otherwise...
 
-## Getting Started
+## Mindfulness Powered by Gemini AI
+
+### Tarot Draw (Mindfulness Magic)
+
+When you're feeling stuck, anxious, or just need a moment, click the ✨ Tarot Draw button. The feature uses Gemini AI to generate gentle metaphors, journal prompts, or grounding phrases based on:
+
+- Your pet's emotional state
+- Your recent habits
+- Time of day
+
+Example readings:
+- "You drew: The Stilled Wind — Sometimes, stillness is the loudest kind of progress."
+- "A reflection: What would rest look like if you treated it like your most sacred task today?"
+
+The readings are designed to be poetic and reflective rather than advice-giving, combining AI with metaphoric language for mental health support.
+
+## How to download our amazing extension...
 
 ### Prerequisites
 
@@ -35,22 +51,6 @@ The FIRST (probably) Chrome extension that actually holds you accountable for we
    - Open Chrome and go to `chrome://extensions/`
    - Enable "Developer mode"
    - Click "Load unpacked" and select the `dist` directory
-
-## Gemini AI Feature
-
-### Tarot Draw (Mindfulness Magic)
-
-When you're feeling stuck, anxious, or just need a moment, click the ✨ Tarot Draw button. The feature uses Gemini AI to generate gentle metaphors, journal prompts, or grounding phrases based on:
-
-- Your pet's emotional state
-- Your recent habits
-- Time of day
-
-Example readings:
-- "You drew: The Stilled Wind — Sometimes, stillness is the loudest kind of progress."
-- "A reflection: What would rest look like if you treated it like your most sacred task today?"
-
-The readings are designed to be poetic and reflective rather than advice-giving, combining AI with metaphoric language for mental health support.
 
 ## Development
 
