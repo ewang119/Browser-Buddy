@@ -16,7 +16,7 @@ export default function ShopScreen({ petData, setPetData }: ShopScreenProps) {
     const shopItems = [
         { item: "Medkit", description: "+10 HP", image: "/medkit.png", price: 150 }, 
         { item: "Scores", description: "+10 XP", image: "/xp.png", price: 150 },
-        { item: "Slinky", description: "+10 Morale", image: "/slinky.png", price: 150 }, 
+        { item: "Angel", description: "+10 Morale", image: "/angel.png", price: 150 }, 
         { item: "Mystery", description: "??????", image: "/mysteryBox.gif", price: 300 },  
     ];
 
