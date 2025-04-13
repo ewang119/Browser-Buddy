@@ -3,8 +3,14 @@ export interface Goal {
     label: string
     completed: boolean
   }
-  
-  export interface PetData {
+export interface BudgetGoal extends Goal {
+    description: string;
+    tags: string[];
+    amountAllocated: number;
+    goalAmount: number;
+  }
+
+export interface PetData {
     animalType: string
     name: string
     lastBreak: number
