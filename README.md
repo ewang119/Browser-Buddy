@@ -1,12 +1,12 @@
 # Browser Buddy
 
-A Chrome extension that helps you stay focused and mindful while browsing the web.
+The FIRST (probably) Chrome extension that actually holds you accountable for web wellness!
 
 ## Features
 
-- Pet companion that grows and evolves as you maintain good browsing habits
+- Choose your own pet companion to join you on your web adventure
 - Mindfulness Tarot Draw feature powered by Gemini AI
-- Streak tracking and rewards system
+- Take web surfing breaks to keep your pet well and gain prestige, but your pet may suffer otherwise...
 
 ## Getting Started
 
@@ -36,7 +36,7 @@ A Chrome extension that helps you stay focused and mindful while browsing the we
    - Enable "Developer mode"
    - Click "Load unpacked" and select the `dist` directory
 
-## Features
+## Gemini AI Feature
 
 ### Tarot Draw (Mindfulness Magic)
 
