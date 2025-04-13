@@ -16,7 +16,7 @@ export default function StartScreen({ setPetData }: Props) {
   // const [animalType, setAnimalType] = useState('cat'); 
   const [error, setError] = useState<string | null>(null)
   const [current, setCurrent] = useState(0)
-  const [_goals, setGoals] = useState<{ label: string; completed: boolean }[]>([]);
+  const [goals, setGoals] = useState<{ label: string; completed: boolean }[]>([]);
 
 
   const animals = [
@@ -126,7 +126,7 @@ export default function StartScreen({ setPetData }: Props) {
         isOnBreak: false,
         budget: 0,
         coins: 0,
-        goals: [],
+        goals: goals,
         streaks: 0,
         prestige: 0,
         HP: 100,
