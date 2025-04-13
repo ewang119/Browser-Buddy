@@ -6,7 +6,7 @@ import WelcomePopup from './WelcomePopup';
 import PetMood from './PetMood';
 import PetSprite from './PetSprite';
 import { useNavigate } from 'react-router-dom';
-import { MdShoppingCart } from 'react-icons/md';
+import { MdShoppingCart, MdStars } from 'react-icons/md';
 import '../styles/MainScreen.css';
 
 interface MainScreenProps {
@@ -28,6 +28,7 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
   const [showTarot, setShowTarot] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
   const [newGoal, setNewGoal] = useState('');
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const updatePetData = async (newData: PetData) => {
     setPetData(newData);
@@ -44,12 +45,14 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
 
     const newData = {
       ...petData,
-      goals: wasCompleted ? updatedGoals : updatedGoals.filter((_, i) => i !== index),
+      goals: updatedGoals,
       XP: Math.min(100, Math.max(0, petData.XP + XPChange)),
       morale: Math.min(100, Math.max(0, petData.morale + moraleChange))
     };
 
     await updatePetData(newData);
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 1000);
   };
 
   const addGoal = async () => {
@@ -80,7 +83,10 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
       <div className="bar">
         <span>{label}</span>
         <div className="track">
-          <div className="fill" style={{ width: `${value}%`, backgroundColor }} />
+          <div 
+            className={`fill ${isAnimating ? 'pulse' : ''}`} 
+            style={{ width: `${value}%`, backgroundColor }} 
+          />
         </div>
       </div>
     );
@@ -90,7 +96,10 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
     <div className="main-screen">
       {showWelcome && <WelcomePopup petData={petData} onClose={() => setShowWelcome(false)} />}
 
-      <h2 className="header">Lv. 1 {petData.name}</h2>
+      <div className="header">
+        <h2 className="title">✨ {petData.name} ✨</h2>
+        <div className="sparkle"></div>
+      </div>
 
       <PetSprite petData={petData} setPetData={setPetData} />
 
@@ -103,23 +112,23 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
       </div>
 
       <div className="goals">
-        <h3>Daily Goals</h3>
+        <h3>🌟 Daily Goals 🌟</h3>
         <div className="goal-input">
           <input
             type="text"
             value={newGoal}
             onChange={(e) => setNewGoal(e.target.value)}
-            placeholder="Add a new goal..."
+            placeholder="✨ Add a new goal..."
             onKeyDown={(e) => e.key === 'Enter' && addGoal()}
           />
-          <button onClick={addGoal}>Add</button>
+          <button onClick={addGoal} className="add-button">✨ Add</button>
         </div>
-        <ul>
+        <ul className="goal-list">
           {petData.goals.map((goal, i) => (
-            <li key={i}>
+            <li key={i} className={`goal-item ${goal.completed ? 'completed' : ''}`}>
               <label>
                 <input type="checkbox" checked={goal.completed} onChange={() => toggleGoal(i)} />
-                <span className={goal.completed ? 'completed' : ''}>{goal.label}</span>
+                <span>{goal.label}</span>
                 <button className="remove-goal" onClick={() => removeGoal(i)}>×</button>
               </label>
             </li>
@@ -128,17 +137,17 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
       </div>
 
       <div className="actions">
-        <button onClick={() => setShowTarot(true)}>✨ Tarot Draw</button>
-        <button onClick={() => navigate('/shop')}>
-          <MdShoppingCart className="shoppingCart" /> Shop
+        <button onClick={() => setShowTarot(true)} className="action-button tarot">
+          <MdStars /> Tarot Draw
         </button>
-        <button>[INVENTORY]</button>
-        <button>[ENTER DOGFIGHT]</button>
+        <button onClick={() => navigate('/shop')} className="action-button shop">
+          <MdShoppingCart /> Shop
+        </button>
       </div>
 
       <div className="footer">
-        <span>Coins: {petData.coins}</span>
-        <span>Prestige: {petData.prestige}</span>
+        <span className="coins">💰 Coins: {petData.coins}</span>
+        <span className="prestige">🏆 Prestige: {petData.prestige}</span>
       </div>
 
       {showTarot && (

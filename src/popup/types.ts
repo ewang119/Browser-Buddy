@@ -28,4 +28,15 @@ export interface PetData {
       lastUpdate: number
     }
 }
+
+export const animals = [
+  { path: '/animal-gifs/dog.gif', type: 'dog' },
+  { path: '/animal-gifs/cat.gif', type: 'cat' },
+  { path: '/animal-gifs/owl.gif', type: 'owl' },
+  { path: '/animal-gifs/capybara.gif', type: 'capybara' },
+  { path: '/animal-gifs/quokka.gif', type: 'quokka' },
+  { path: '/animal-gifs/bears.gif', type: 'bears' },
+  { path: '/animal-gifs/crab.gif', type: 'crab' },
+  { path: '/animal-gifs/lemur.gif', type: 'lemur' },
+];
   
