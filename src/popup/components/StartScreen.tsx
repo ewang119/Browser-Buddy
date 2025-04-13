@@ -131,7 +131,7 @@ export default function StartScreen({ setPetData }: Props) {
         HP: 100,
         morale: 100,
         XP: 0,
-        highScore: 0
+        highScore: 0,
       }
 
       await savePetData(data)

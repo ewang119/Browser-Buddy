@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import { PetData } from './types'
 import { loadPetData } from './storage'
 import MainScreen from './components/MainScreen'
-// import StartScreen from './components/StartScreen'
-import ShopScreen from './components/ShopScreen'
+import StartScreen from './components/StartScreen'
 import './styles/App.css'
 
 // const defaultPetData: PetData = {
@@ -52,8 +51,7 @@ export default function App() {
   }
 
   if (!petData || !petData.name) {
-    return <ShopScreen />
-    // return <StartScreen setPetData={setPetData} />
+    return <StartScreen setPetData={setPetData} />
   }
 
   return <MainScreen petData={petData} setPetData={setPetData} />
