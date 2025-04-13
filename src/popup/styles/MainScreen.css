@@ -296,3 +296,8 @@
     opacity: 1;
   }
 }
+
+.shoppingCart {
+  size: 2rem;
+  transform: translateY(2.5px);
+}

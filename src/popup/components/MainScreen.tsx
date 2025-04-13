@@ -3,7 +3,11 @@ import React, { useState, useEffect } from 'react'
 import { PetData } from '../types'
 import TarotDraw from './TarotDraw'
 import WelcomePopup from './WelcomePopup'
+
 import PetMood from './PetMood'
+import { useNavigate } from 'react-router-dom';
+import { MdShoppingCart } from 'react-icons/md'
+
 import '../styles/MainScreen.css'
 import { savePetData } from '../storage'
 
@@ -23,6 +27,7 @@ const BREAK_CHECK_INTERVAL = 60 * 1000; // Check for overdue breaks every minute
 const MainScreen: React.FC<MainScreenProps> = ({ petData, setPetData }) => {
   const [showTarot, setShowTarot] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
+
   const [newGoal, setNewGoal] = useState('');
   
   // Initialize timer state from petData or defaults
@@ -200,6 +205,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ petData, setPetData }) => {
     await updatePetData(newData);
   };
 
+
   const startTimer = () => {
     setIsRunning(true);
     setSessionCompleted(false);
@@ -332,7 +338,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ petData, setPetData }) => {
         <button className="action-button" onClick={() => setShowTarot(true)}>
           ✨ Tarot Draw
         </button>
-        <button className="action-button">[SHOP]</button>
+        <button className="action-button" onClick={() => navigate('/shop')}> <MdShoppingCart className="shoppingCart"/> Shop </button>
         <button className="action-button">[INVENTORY]</button>
         <button className="action-button">[ENTER DOGFIGHT]</button>
       </div>
