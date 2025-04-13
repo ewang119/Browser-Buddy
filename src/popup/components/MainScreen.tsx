@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { PetData } from '../types'
 import TarotDraw from './TarotDraw'
 import WelcomePopup from './WelcomePopup'
+import { useNavigate } from 'react-router-dom';
 import '../styles/MainScreen.css'
 
 interface MainScreenProps {
@@ -13,6 +14,7 @@ interface MainScreenProps {
 export default function MainScreen({ petData, setPetData }: MainScreenProps) {
   const [showTarot, setShowTarot] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
+  const navigate = useNavigate();
 
   const toggleGoal = (index: number) => {
     const newGoals = [...petData.goals]
@@ -74,7 +76,7 @@ export default function MainScreen({ petData, setPetData }: MainScreenProps) {
         <button className="action-button" onClick={() => setShowTarot(true)}>
           ✨ Tarot Draw
         </button>
-        <button className="action-button">[SHOP]</button>
+        <button className="action-button" onClick={() => navigate('/shop')}>[SHOP]</button>
         <button className="action-button">[INVENTORY]</button>
         <button className="action-button">[ENTER DOGFIGHT]</button>
       </div>

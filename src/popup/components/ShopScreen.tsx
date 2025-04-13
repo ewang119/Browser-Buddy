@@ -7,8 +7,6 @@ interface ShopScreenProps {
   setPetData: (data: PetData) => void;
 }
 
-//   // return <ShopScreen petData={petData} setPetData={setPetData} />
-
 export default function ShopScreen({ petData, setPetData }: ShopScreenProps) {
 
     const [popupMessage, setPopupMessage] = useState<string | null>(null);
@@ -35,7 +33,7 @@ export default function ShopScreen({ petData, setPetData }: ShopScreenProps) {
           <header className={styles.header}>
             <h1 className={styles.title}>Shop</h1>
             <div className={styles.tokenDisplay}>
-                <img src="token.png" alt="Coins" className={styles.tokenImage} /> {petData.coins} 
+                <img src="/token.png" alt="Coins" className={styles.tokenImage} /> {petData.coins} 
             </div>
           </header>
 
