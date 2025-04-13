@@ -1,25 +1,27 @@
 import { useEffect, useState } from 'react'
 import { PetData } from './types'
-import { loadPetData } from './storage'
+import { loadPetData, savePetData } from './storage'
 import MainScreen from './components/MainScreen'
 import StartScreen from './components/StartScreen'
 import './styles/App.css'
 
-// const defaultPetData: PetData = {
-//   animalType: '',
-//   name: '',
-//   lastBreak: Date.now(),
-//   nextBreak: Date.now() + 3600000,
-//   budget: 100,
-//   coins: 0,
-//   goals: [],
-//   streaks: 0,
-//   prestige: 0,
-//   HP: 100,
-//   morale: 100,
-//   XP: 0,
-//   highScore: 0
-// }
+/* const defaultPetData: PetData = {
+  animalType: 'dog',
+  name: 'Mochi',
+  lastBreak: Date.now(),
+  nextBreak: Date.now() + 2 * 60 * 1000, // 2 minutes later for testing
+  isOnBreak: false,
+
+  budget: 100,
+  coins: 0,
+  goals: [],
+  streaks: 0,
+  prestige: 0,
+  HP: 100,
+  morale: 100,
+  XP: 0,
+  highScore: 0
+} */
 
 export default function App() {
   const [petData, setPetData] = useState<PetData | null>(null)
@@ -42,6 +44,12 @@ export default function App() {
     fetchPetData()
   }, [])
 
+  useEffect(() => {
+    if (petData) {
+      savePetData(petData);
+    }
+  }, [petData]);
+
   if (isLoading) {
     return (
       <div className="loading-screen">
@@ -54,5 +62,5 @@ export default function App() {
     return <StartScreen setPetData={setPetData} />
   }
 
-  return <MainScreen petData={petData} setPetData={setPetData} />
+  return <MainScreen petData={petData} setPetData={setPetData as React.Dispatch<React.SetStateAction<PetData>>} />
 }

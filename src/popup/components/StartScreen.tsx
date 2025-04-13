@@ -58,7 +58,8 @@ export default function StartScreen({ setPetData }: Props) {
         animalType,
         name,
         lastBreak: now,
-        nextBreak: now + 3600000,
+        nextBreak: now + 60 * 1000,
+        isOnBreak: false,
         budget: 100,
         coins: 0,
         goals: [

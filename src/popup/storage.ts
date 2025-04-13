@@ -53,27 +53,3 @@ export function loadPetData(): Promise<PetData | null> {
     })
   })
 }
-
-export function clearPetData(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (!isChromeExtension()) {
-      console.warn('Chrome extension API not available, using localStorage as fallback')
-      try {
-        localStorage.removeItem(STORAGE_KEY)
-        resolve()
-      } catch (error) {
-        reject(error)
-      }
-      return
-    }
-
-    chrome.storage.local.remove(STORAGE_KEY, () => {
-      if (chrome.runtime.lastError) {
-        console.error('Chrome storage error:', chrome.runtime.lastError)
-        reject(chrome.runtime.lastError)
-      } else {
-        resolve()
-      }
-    })
-  })
-}
